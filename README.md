@@ -271,21 +271,3 @@ Berikut adalah ScreenShoot Hasil Program :
 
 ![Hasil Terminal](Screenshot%202026-05-15%20083252.png)
 ---
-
-##  Kontribusi
-
-Bila anda menemukan bug atau punya ide pengembangan? Silakan:
-
-1. Fork repositori ini
-2. Buat branch baru: `git checkout -b fitur-baru`
-3. Commit perubahanmu: `git commit -m "Tambah fitur X"`
-4. Push ke branch: `git push origin fitur-baru`
-5. Buat Pull Request
-
----
-
-<div align="center">
-
-*"The best way to learn is by doing — dan proyek ini adalah langkah pertamamu."*
-
-</div>
