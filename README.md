@@ -14,7 +14,7 @@
 - [Instalasi & Menjalankan](#-instalasi--menjalankan)
 - [Contoh Output](#-contoh-output)
 - [Penjelasan Kode](#-penjelasan-kode)
-- [Hasil Program](#-hasil-program)
+- [Hasil Program](#hasil-program)
 
 ---
 
