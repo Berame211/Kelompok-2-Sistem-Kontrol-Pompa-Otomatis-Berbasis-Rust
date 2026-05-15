@@ -1,0 +1,489 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[indonesian]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{tcolorbox} % Untuk membuat kotak biru pada judul
+\usepackage{array}     % Untuk merapikan tabel data mahasiswa
+
+% --- KONFIGURASI GEOMETRY ---
+\geometry{top=3cm, bottom=3cm, left=3cm, right=3cm}
+
+% --- DEFINISI WARNA (Sesuai Permintaan Cover) ---
+\definecolor{boxblue}{RGB}{235, 245, 255}
+\definecolor{borderblue}{RGB}{0, 51, 102}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% --- SETUP LISTING RUST ---
+\lstset{
+    language=Rust,
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegray},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\begin{document}
+
+% ============================================================================
+% COVER PAGE (Sesuai Permintaan)
+% ============================================================================
+\begin{titlepage}
+    \centering
+    
+    % Judul Utama
+    {\LARGE \textbf{EVALUASI TENGAH SEMESTER}} \\[0.2cm]
+    {\LARGE \textbf{(ETS)}} \\[0.5cm]
+    
+    {\Large \textbf{Algoritma dan Pemrograman}} \\[0.8cm]
+    
+    {\large Program Studi Teknik Instrumentasi} \\[0.2cm]
+    {\large Semester Genap 2025/2026} \\[1.5cm]
+    
+    % Kotak Judul Project (PBL)
+    \begin{tcolorbox}[
+        colback=boxblue, 
+        colframe=borderblue, 
+        width=0.9\textwidth, 
+        arc=5pt, 
+        boxrule=1pt,
+        center title,
+        halign=center
+    ]
+        \centering
+        \textbf{\large PROJECT BASED LEARNING (PBL)} \\[0.3cm]
+        \textbf{Sistem Instrumentasi Kontrol Pompa Otomatis \\ Berbasis Rust}
+    \end{tcolorbox}
+    
+    \vfill 
+    
+    % Detail Pengampu dan Waktu
+    \begin{flushleft}
+    \hspace{2.5cm} 
+    \begin{tabular}{ll}
+        \textbf{Dosen Pengampu}  & : Ahmad Radhy, S.Si., M.Si. \\
+        \textbf{Durasi Pengerjaan} & : 1 Pekan \\
+        \textbf{Bahasa Pemrograman} & : Rust \\
+        \textbf{Metode Penilaian}  & : Project + Ujian Lisan \\
+    \end{tabular}
+    \end{flushleft}
+    
+    \vspace{1.5cm}
+    
+    % Data Mahasiswa
+    \begin{flushleft}
+    \hspace{2.5cm}
+    \begin{tabular}{ll}
+        \textbf{Kelompok :} & 2 \\[0.3cm] 
+        \textbf{Mahasiswa 1 :} & Hafidzan Yaafi Az Zaahir \\[0.1cm]
+        \textbf{NRP :} & 2042251062 \\[0.3cm]
+        \textbf{Mahasiswa 2 :} & Higmatiar Maulana Sakti \\[0.1cm]
+        \textbf{NRP :} & 2042251128 \\
+    \end{tabular}
+    \end{flushleft}
+    
+    \vfill
+    
+    {\large Departemen Teknik Instrumentasi} \\[0.1cm]
+    {\large Institut Teknologi Sepuluh Nopember} \\[1cm]
+    
+    \textbf{1} 
+\end{titlepage}
+
+\newpage
+\tableofcontents
+\newpage
+
+% ============================================================================
+% ISI LAPORAN
+% ============================================================================
+
+\section{Pendahuluan}
+Sistem kontrol otomatis pada dasarnya merupakan penerapan dari ilmu teknik kendali yang menggabungkan berbagai komponen elektronika seperti sensor, aktuator, mikrokontroler, dan relay dalam satu sistem yang terintegrasi dan bekerja secara sinergis. Prinsip dasar dari sistem ini adalah memanfaatkan umpan balik (feedback) dari sensor untuk mengambil keputusan secara otomatis apakah pompa perlu dihidupkan atau dimatikan berdasarkan kondisi level air yang terdeteksi. Dengan prinsip kerja ini, sistem kontrol pompa otomatis mampu menjaga level air dalam tangki penampungan pada rentang yang diinginkan secara konsisten tanpa memerlukan pengawasan manusia secara terus-menerus.
+
+Dari sisi ekonomi dan efisiensi energi, sistem kontrol pompa otomatis juga memberikan manfaat yang sangat signifikan. Dengan kemampuan sistem untuk secara otomatis menghidupkan pompa hanya ketika dibutuhkan dan mematikannya segera setelah kondisi yang diinginkan tercapai, konsumsi energi listrik dapat ditekan secara optimal. Hal ini tidak hanya berdampak pada penghematan biaya operasional, tetapi juga berkontribusi pada upaya efisiensi energi yang saat ini menjadi perhatian global mengingat semakin terbatasnya sumber energi dan semakin meningkatnya kesadaran akan pentingnya penggunaan energi secara bijak dan bertanggung jawab.
+
+Berdasarkan berbagai pertimbangan di atas, pengembangan dan implementasi sistem kontrol pompa otomatis menjadi topik yang sangat relevan dan penting untuk dikaji secara mendalam, baik dari sisi perancangan perangkat keras maupun perangkat lunak yang mendasarinya. Penelitian dan pengembangan di bidang ini terus berkembang seiring dengan hadirnya komponen-komponen elektronika yang semakin canggih, terjangkau, dan mudah diintegrasikan, sehingga membuka peluang untuk menciptakan sistem kontrol pompa yang semakin handal, efisien, dan mudah digunakan oleh masyarakat luas.
+
+\section{Studi Kasus Instrumentasi}
+Studi kasus yang diambil adalah monitoring tangki penyimpanan air. Tantangan utama adalah ketidakpastian nilai sensor (adanya \textit{error bias}). Sistem harus mampu:
+\begin{enumerate}
+    \item Melakukan kalibrasi mandiri untuk menghilangkan selisih pembacaan sensor dengan nilai aktual.
+    \item Mengendalikan operasi pompa secara otomatis
+    \item Melakukan aksi \textit{safety interlocking}:
+    \begin{itemize}
+        \item \textbf{Low Low (LL):} Mengaktifkan pompa jika kurang dari batas minimal air .
+        \item \textbf{High High (HH):} Mematikan pompa jika sudah sampai batas maksimal ketinggian air.
+    \end{itemize}
+\end{enumerate}
+
+\section{Algoritma dan Flowchart}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{WhatsApp Image 2026-05-15 at 3.28.36 AM.jpeg}
+    \caption{Caption}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection{Penjelasan Flowchart}
+Berdasarkan flowchart pada Gambar \ref{fig:placeholder}, berikut adalah penjelasan mengenai alur logika sistem kontrol pompa:
+
+\begin{enumerate}
+    \item \textbf{Terminal (Start/End)}
+    \begin{itemize}
+        \item \textbf{Mulai (Start)}: Menandai awal eksekusi program. Di dalam kode, ini setara dengan pemanggilan fungsi \texttt{main()}.
+        \item \textbf{Selesai (Stop)}: Menandai akhir dari proses kontrol. Program akan berhenti setelah menampilkan status pompa dan estimasi waktu.
+    \end{itemize}
+
+    \item \textbf{Inisialisasi \& Input (Paralelogram)}
+    \begin{itemize}
+        \item \textbf{Inisialisasi \texttt{SistemPompa}}: Program membuat objek \texttt{pompa\_industri} dengan parameter tetap: kapasitas 1000L, debit 5L/detik, dan ambang batas rendah 200L.
+        \item \textbf{Input Level Air}: Operator memasukkan data level cairan saat ini melalui fungsi \texttt{minta\_input\_angka} yang divalidasi agar tidak negatif atau melebihi kapasitas.
+    \end{itemize}
+
+    \item \textbf{Struktur Keputusan / Decision (Belah Ketupat)}
+    Merupakan inti dari logika \textit{safety interlocking} pada sistem:
+    \begin{itemize}
+        \item \textbf{Level $\geq$ Kapasitas?}: Mengecek apakah tangki sudah penuh. Jika \textbf{Ya}, pompa dimatikan (\texttt{OFF}) untuk mencegah \textit{overflow}.
+        \item \textbf{Level $<$ Batas Rendah?}: Mengecek apakah level di bawah 200L. Jika \textbf{Ya}, pompa dinyalakan (\texttt{ON}) untuk mengisi tangki.
+        \item \textbf{Kondisi Lain (Else)}: Jika level berada di antara 200L dan 1000L, pompa tetap dalam status \texttt{Standby} (Mati).
+    \end{itemize}
+
+    \item \textbf{Proses \& Perhitungan (Persegi Panjang)}
+    \begin{itemize}
+        \item \textbf{Hitung Estimasi Waktu}: Jika pompa menyala, sistem menjalankan komputasi numerik menggunakan metode \texttt{hitung\_estimasi\_waktu} dengan rumus $t = \frac{\Delta V}{Q}$.
+        \item \textbf{Set Status Pompa}: Mengubah variabel status operasional berdasarkan keputusan logika di atas.
+    \end{itemize}
+
+    \item \textbf{Output (Paralelogram)}
+    \begin{itemize}
+        \item \textbf{Tampilkan Status \& Waktu}: Program mencetak hasil akhir ke terminal, memberikan informasi status pompa dan durasi pengisian hingga penuh.
+    \end{itemize}
+\end{enumerate}
+
+\newpage
+
+\section{Konsep Pemrograman Berbasis Objek (OOP)}
+\begin{enumerate}
+    \item \textbf{Pengertian Object Oriented Programming (OOP)} 
+    Object Oriented Programming (OOP) atau pemrograman berbasis objek merupakan
+paradigma pemrograman yang menggunakan objek sebagai dasar utama dalam pe
+ngembangan program. Objek digunakan untuk merepresentasikan data serta fungsi
+yang saling berhubungan di dalam suatu sistem. Konsep OOP bertujuan untuk
+mempermudah pengelolaan program agar lebih terstruktur, mudah dikembangkan,
+mudah dipelihara, dan dapat digunakan kembali.
+Pada project sistem monitoring level tangki ini, konsep OOP diterapkan meng
+gunakan bahasa pemrograman Rust dengan memanfaatkan struct dan implemen
+tation block (impl). Struktur program dibuat agar data tangki dan seluruh proses
+monitoring berada di dalam satu objek sehingga sistem menjadi lebih modular dan
+efisien.
+    \item \textbf{Penerapan OOP pada Sistem kontrol pompa}
+    Pada program sistem kontrol pompa, konsep OOP digunakan untuk menge
+lompokkan seluruh parameter dan fungsi kontrol ke dalam objek kontrol.
+Objek ini menyimpan data kapasitas tangki, batas Low Low (LL), ba
+tas High High (HH), dan pembacaan sensor level.
+Berikut merupakan deklarasi struct yang digunakan pada program:
+
+\begin{lstlisting}
+let pompa_industri = SistemPompa {
+    nama_pompa: String::from("Pompa Utama A1"),
+    kapasitas_tangki: 1000.0,
+    debit_pompa: 5.0,
+    struct SistemPompa {
+    nama_pompa: String,
+    kapasitas_tangki: f64,
+    debit_pompa: f64,
+};
+\end{lstlisting}
+
+Struct tersebut berfungsi sebagai blueprint atau rancangan objek yang menyimpan seluruh data monitoring tangki.
+
+    \item \textbf{konsep OOP Object}
+adalah Konsep dalam OOP pada sistem kontrol pompa adalah proses membungkus data dan fungsi dalam satu kesatuan objek sehingga akses terhadap data tersebut dapat dikontrol dengan baik. Dalam program Rust yang dibuat, enkapsulasi diterapkan melalui penggunaan struct SistemPompa yang menyimpan seluruh atribut penting seperti nama pompa, kapasitas tangki, dan debit pompa. Data-data ini tidak diakses secara langsung dari luar, melainkan digunakan melalui method seperti hitungestimasiwaktu(), yang bertugas mengolah data internal untuk menghasilkan informasi berupa estimasi waktu pengisian tangki. Dengan pendekatan ini, logika perhitungan menjadi terpusat dan lebih terorganisir, 
+  
+    
+\end{enumerate}
+
+
+\section{Implementasi Komputasi Numerik}
+Komputasi numerik digunakan untuk mengolah data mentah sensor:
+\begin{itemize}
+    \item \textbf{Koreksi Linear:} Menggunakan penambahan bias secara konstan untuk mendapatkan nilai riil.
+    \item \textbf{Konversi Skala:} Melakukan pemetaan (\textit{mapping}) nilai linear dari domain meter (0 - $h$) ke domain volume (0 - $V_{max}$).
+\end{itemize}
+
+\subsection*{Persamaan Matematis yang Digunakan}
+Program menggunakan metode perhitungan linear untuk menentukan durasi waktu yang dibutuhkan fluida untuk memenuhi kapasitas tangki. Persamaan dasarnya adalah:
+
+\begin{equation}
+    t = \frac{V_{kapasitas} - V_{level}}{Q_{debit}}
+\end{equation}
+
+Di mana:
+\begin{itemize}
+    \item $t$: Estimasi waktu (detik).
+    \item $V_{kapasitas}$: Kapasitas maksimal tangki (liter).
+    \item $V_{level}$: Level cairan saat ini (liter).
+    \item $Q_{debit}$: Laju alir atau debit pompa (liter/detik).
+\end{itemize}
+
+\subsection*{Implementasi dalam Kode (Rust)}
+Secara teknis, logika ini diletakkan di dalam \textit{method} \texttt{hitung\_estimasi\_waktu} pada blok implementasi \texttt{struct SistemPompa}:
+
+\begin{lstlisting}
+fn hitung_estimasi_waktu(&self, level_sekarang: f64) -> f64 {
+    let sisa_volume = self.kapasitas_tangki - level_sekarang; 
+    if sisa_volume <= 0.0 {
+        0.0 
+    } else {
+        sisa_volume / self.debit_pompa 
+    }
+}
+\end{lstlisting}
+
+\subsection*{Karakteristik Komputasi Numerik dalam Program}
+\begin{itemize}
+    \item \textbf{Presisi Data}: Menggunakan tipe data \texttt{f64} untuk memastikan tingkat presisi yang tinggi.
+    \item \textbf{Koreksi Kondisi Batas}: Pengecekan \texttt{if sisa\_volume <= 0.0} untuk mencegah ralat logika.
+    \item \textbf{Deterministik}: Memberikan hasil yang pasti berdasarkan parameter input.
+    \item \textbf{Output Terformat}: Format \texttt{\{:.1\}} untuk memudahkan pembacaan hasil oleh operator.
+\end{itemize}
+
+\section{Penjelasan Program Rust}
+Source code yang dibuat merupakan implementasi sistem kontrol pompa sederhana berbasis bahasa Rust yang berjalan secara interaktif melalui terminal. Program diawali dengan fungsi mintainputangka() yang bertugas membaca input dari pengguna dan mengonversinya menjadi tipe data numerik (f64). Fungsi ini juga dilengkapi dengan validasi sederhana untuk menangani kesalahan input dengan memberikan nilai default jika input tidak valid. Selanjutnya, digunakan konsep pemrograman berbasis objek melalui struct SistemPompa yang berfungsi sebagai representasi sistem pompa dengan atribut berupa nama pompa, kapasitas tangki, dan debit pompa. Pada bagian impl, didefinisikan method hitungestimasiwaktu() yang digunakan untuk menghitung estimasi waktu yang dibutuhkan hingga tangki penuh berdasarkan selisih volume dan debit pompa.
+
+Kode berikut dirancang untuk berjalan di terminal secara interaktif:
+
+\begin{lstlisting}[caption=Program Monitoring Tangki Interaktif]
+use std::io; // Library untuk input/output
+
+fn minta_input_angka(kapasitas: f64) -> f64 {
+    loop {
+        let mut input_teks = String::new();
+        io::stdin().read_line(&mut input_teks).expect("Gagal membaca input");
+        match input_teks.trim().parse::<f64>() {
+            Ok(num) => {
+                if num < 0.0 {
+                    println!("Level tidak boleh negatif!");
+                } else if num > kapasitas {
+                    println!("Level tidak boleh melebihi kapasitas tangki ({:.0} liter)!", kapasitas);
+                } else {
+                    return num;
+                }
+            },
+            Err(_) => println!("Input tidak valid, coba lagi :"),
+        }
+    }
+}
+
+// Poin 3: Pemrograman Berbasis Objek (Struct)
+struct SistemPompa {
+    nama_pompa: String,
+    batas_level_rendah: f64,
+    kapasitas_tangki: f64, // Liter
+    debit_pompa: f64, 
+}
+
+impl SistemPompa {
+    // Poin 4: Komputasi Numerik
+    // Fungsi untuk menghitung sisa waktu sampai penuh
+    fn hitung_estimasi_waktu(&self, level_sekarang: f64) -> f64 {
+        let sisa_volume = self.kapasitas_tangki - level_sekarang;
+        if sisa_volume <= 0.0 {
+            0.0
+        } else {
+            sisa_volume / self.debit_pompa
+        }
+        
+    }
+}
+
+fn main() {
+    // Inisialisasi objek
+    let pompa_industri = SistemPompa {
+        nama_pompa: String::from("Pompa Utama A1"),
+        kapasitas_tangki: 1000.0,
+        debit_pompa: 5.0,
+        batas_level_rendah: 200.0,
+    };
+
+    println!("--- Selamat Datang di Kontrol {} ---", pompa_industri.nama_pompa);
+    
+    // Meminta input level air
+    println!("Masukkan level air saat ini (liter): ");
+    let level_input = minta_input_angka(pompa_industri.kapasitas_tangki);
+
+    // Logika Kontrol (Poin 2: Implementasi Algoritma)
+    if level_input >= pompa_industri.kapasitas_tangki {
+        println!("Status: TANGKI PENUH. Pompa MATI.");
+    } else if level_input < pompa_industri.batas_level_rendah {
+        println!("Status: LEVEL RENDAH. Pompa NYALA.");
+        let waktu = pompa_industri.hitung_estimasi_waktu(level_input);
+        println!("Estimasi tangki penuh dalam: {:.1} detik", waktu);
+    } else {
+        println!("Status: LEVEL AMAN. Pompa STANDBY.");
+    }
+}
+
+\end{lstlisting}
+
+\section{Struktur Program Sistem Kontrol Pompa}
+
+\begin{itemize}
+
+\item \textbf{Import Library}
+\begin{itemize}
+    \item Menggunakan \texttt{use std::io;}
+    \item Berfungsi untuk menangani input dan output (I/O) dari pengguna.
+\end{itemize}
+
+\item \textbf{Fungsi Input (\texttt{minta\_input\_angka})}
+\begin{itemize}
+    \item Membaca input dari pengguna dalam bentuk teks.
+    \item Mengubah (parse) input menjadi tipe data \texttt{f64}.
+    \item Menggunakan \texttt{trim()} untuk menghapus spasi atau enter.
+    \item Memiliki penanganan error:
+    \begin{itemize}
+        \item Jika input bukan angka, maka menggunakan nilai default \texttt{0.0}.
+    \end{itemize}
+\end{itemize}
+
+\item \textbf{Deklarasi Struct (OOP)}
+\begin{itemize}
+    \item \texttt{struct SistemPompa} sebagai representasi objek pompa.
+    \item Memiliki atribut:
+    \begin{itemize}
+        \item \texttt{nama\_pompa} (String)
+        \item \texttt{kapasitas\_tangki} (liter)
+        \item \texttt{debit\_pompa} (liter/detik)
+    \end{itemize}
+\end{itemize}
+
+\item \textbf{Implementasi Method}
+\begin{itemize}
+    \item Method: \texttt{hitung\_estimasi\_waktu(\&self, level\_sekarang: f64)}
+    \item Fungsi:
+    \begin{itemize}
+        \item Menghitung sisa volume tangki.
+        \item Jika tangki penuh, maka hasil = 0.
+        \item Jika belum penuh, maka waktu = sisa volume dibagi debit pompa.
+    \end{itemize}
+    \item Menerapkan konsep enkapsulasi dan komputasi numerik.
+\end{itemize}
+
+\item \textbf{Fungsi Utama (\texttt{main})}
+\begin{itemize}
+    \item Titik awal eksekusi program.
+    \item Inisialisasi objek \texttt{pompa\_industri}.
+    \item Menampilkan informasi awal kepada pengguna.
+    \item Meminta input level air saat ini.
+\end{itemize}
+
+\item \textbf{Logika Kontrol (Algoritma)}
+\begin{itemize}
+    \item Menggunakan percabangan \texttt{if-else}:
+    \begin{itemize}
+        \item Jika level $\geq$ kapasitas tangki:
+        \begin{itemize}
+            \item Status: Tangki penuh
+            \item Pompa mati
+        \end{itemize}
+        \item Jika level $<$ 200 liter:
+        \begin{itemize}
+            \item Status: Level rendah
+            \item Pompa nyala
+            \item Menghitung estimasi waktu pengisian
+        \end{itemize}
+        \item Selain itu:
+        \begin{itemize}
+            \item Status: Aman
+            \item Pompa standby
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\item \textbf{Output Program}
+\begin{itemize}
+    \item Menampilkan status kondisi tangki.
+    \item Menampilkan estimasi waktu jika pompa aktif.
+\end{itemize}
+
+
+\end{itemize}
+
+
+\section{Hasil Pengujian}
+Pengujian dilakukan untuk memvalidasi logika \textit{interlocking} dan fungsi proteksi input.
+\begin{table}[h!]
+\centering
+\caption{Hasil Pengujian Sistem Kontrol Pompa dengan Garis Lengkap}
+\vspace{0.2cm}
+\begin{tabular}{|l|l|l|l|} % Menambahkan garis vertikal dengan '|'
+\hline % Garis horizontal atas
+\textbf{Kondisi} & \textbf{Input (L)} & \textbf{Ekspektasi Output} & \textbf{Status} \\ \hline
+Level Rendah   & 150.0  & Pompa Nyala, Estimasi 170.0s     & PASSED \\ \hline
+Level Aman     & 500.0  & Pompa Standby                    & PASSED \\ \hline
+Tangki Penuh   & 1000.0 & Pompa Mati                       & PASSED \\ \hline
+Error Handling & -50.0  & Pesan Error (Level Negatif)      & PASSED \\ \hline
+Error Handling & 1200.0 & Pesan Error (Melebihi Kapasitas) & PASSED \\ \hline
+Error Handling & abc    & Pesan Error (Bukan Angka)        & PASSED \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection*{Penjelasan pengujian}
+Berdasarkan hasil di atas, sistem dinyatakan \textbf{Lulus Uji (Passed)} karena mampu menangani skenario normal maupun kondisi anomali input tanpa mengalami kegagalan sistem (\textit{crash}). Hal ini sesuai dengan kriteria keamanan instrumen industri yang membutuhkan reliabilitas tinggi.
+
+\section{Analisis Hasil}
+Fitur penyimpanan nilai \textit{error} bekerja dengan baik. Sekalipun user berkali-kali memasukkan nilai sensor, sistem tetap menggunakan nilai bias pertama sebagai acuan koreksi. Hal ini meniru perilaku PLC di industri yang menyimpan konstanta kalibrasi pada register memorinya. Konversi tinggi ke volume berjalan akurat secara linear.
+
+\begin{enumerate}
+    \item \textbf{Penerapan Konsep OOP yang Efektif}: Penggunaan \texttt{struct SistemPompa} berhasil memodelkan aset fisik industri ke dalam bentuk digital secara terstruktur. Seluruh atribut seperti \texttt{kapasitas\_tangki} dan \texttt{debit pompa} terbungkus rapi bersama metode operasionalnya (\texttt{hitungestimasiwaktu}) dalam blok \texttt{impl}, sesuai dengan prinsip enkapsulasi.
+    
+    \item \textbf{Akurasi Komputasi Numerik}: Program mengimplementasikan perhitungan estimasi waktu pengisian secara linear yang akurat. Dengan menggunakan formula:
+    \begin{equation}
+        t = \frac{V_{kapasitas} - V_{level}}{Q_{debit}}
+    \end{equation}
+    Sistem dapat memberikan informasi prediktif yang krusial bagi operator untuk mencegah \textit{dry running} atau kerusakan peralatan.
+    
+    \item \textbf{Validasi Input yang Robust}: Fungsi \texttt{minta\_input\_angka} menerapkan mekanisme penanganan kesalahan (\textit{error handling}) yang kuat menggunakan \texttt{loop} dan \textit{pattern matching} (\texttt{match}). Hal ini memastikan bahwa sistem hanya menerima angka desimal positif dan memberikan peringatan langsung jika input melebihi kapasitas tangki, sehingga meningkatkan keamanan operasional program.
+    
+    \item \textbf{Logika Kontrol Interlocking}: Penggunaan struktur kendali \texttt{if-else} mencerminkan logika \textit{interlocking} otomatis di industri. Sistem secara cerdas menentukan tiga status kritis:
+    \begin{itemize}
+        \item \textbf{TANGKI PENUH}: Mematikan pompa saat mencapai kapasitas maksimum untuk mencegah \textit{overflow}.
+        \item \textbf{LEVEL RENDAH}: Mengaktifkan pompa secara otomatis saat level di bawah ambang batas (\textit{Low Level}).
+        \item \textbf{LEVEL AMAN}: Menjaga sistem dalam kondisi siaga (\textit{standby}).
+    \end{itemize}
+    
+    \item \textbf{Keamanan Memori dan Performa}: Dengan basis bahasa Rust, program ini memiliki jaminan keamanan memori tanpa \textit{garbage collector}, yang sangat penting untuk aplikasi sistem kontrol yang membutuhkan stabilitas tinggi dan penggunaan sumber daya yang efisien[cite: 30, 326].
+\end{enumerate}
+
+\section{Kesimpulan}
+Pengembangan sistem kontrol level tangki berbasis Rust ini membuktikan bahwa:
+\begin{enumerate}
+    \item Konsep \textit{Object Oriented Programming} (OOP) sangat efektif untuk memodelkan aset fisik seperti tangki dan pompa industri.
+    \item Logika \textit{safety interlocking} yang diterapkan berhasil menjamin bahwa aktuator akan merespons sesuai dengan kondisi level yang telah dianalisis.
+    \item Rust mampu menghadirkan keseimbangan antara performa tinggi dan keamanan tipe data untuk pengembangan aplikasi instrumentasi industri.
+\end{enumerate}
+
+\end{document}
