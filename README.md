@@ -286,8 +286,6 @@ Bila anda menemukan bug atau punya ide pengembangan? Silakan:
 
 <div align="center">
 
-Dibuat dengan ❤️ untuk komunitas pemelajar Rust Indonesia
-
 *"The best way to learn is by doing — dan proyek ini adalah langkah pertamamu."*
 
 </div>
